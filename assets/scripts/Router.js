@@ -38,6 +38,7 @@ export class Router {
      * router instance using the 'this' keyword. Substitute 'home' for the variable
      * page
      */
+    this[page] = pageFunc;
   }
 
   /**
@@ -65,5 +66,38 @@ export class Router {
      *     and URL + hash to history
      *  4. Finally, call the stored function for the given page
      */
+
+    // Check if function exist
+    if (this[page] == null){
+      console.error("Function does not exist!");
+      return;
+    }
+
+    // My TODO: The page doesn't have the right hash. 
+    // Is it because it's not a published page yet?
+
+    // Create variable called hash
+    let hash;
+
+    // If page == 'home' set hash to be an empty string
+    if (page == 'home'){
+      hash = '';
+    }
+    else{
+       // If page is not home, set hash to be '#' + page
+      hash = '#' + page;
+    }
+
+    // if statePopped is false and window.location.hash does NOT match the
+    // hash that you just made, use history.pushState() to add the current state
+    // and URL + hash to history
+    // Reference: https://developer.mozilla.org/en-US/docs/Web/API/History_API/Working_with_the_History_API
+    if (statePopped == false && window.location.hash != hash){
+      // MY TODO: Not sure what to put for the state (i.e 1st arg of pushState)
+      history.pushState({key: page}, '', window.location.origin + hash);
+    }
+
+    // Call stored function
+    this[page]();
   }
 }
