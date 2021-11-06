@@ -52,24 +52,25 @@ self.addEventListener('fetch', function (event) {
         if (response) {
           return response;
         }
-
-        return fetch(event.request).then(
-          function(response) {
-            // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
+        else{
+          return fetch(event.request).then(
+            function(response) {
+              // Check if we received a valid response
+              if(!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+  
+              var responseToCache = response.clone();
+  
+              caches.open(CACHE_NAME)
+                .then(function(cache) {
+                  cache.put(event.request, responseToCache);
+                });
+  
               return response;
             }
-
-            var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
+          );
+        }
       })
     );
 });
