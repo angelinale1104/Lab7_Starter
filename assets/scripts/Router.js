@@ -94,7 +94,7 @@ export class Router {
     // Reference: https://developer.mozilla.org/en-US/docs/Web/API/History_API/Working_with_the_History_API
     if (statePopped == false && window.location.hash != hash){
       // MY TODO: Not sure what to put for the state (i.e 1st arg of pushState)
-      history.pushState({key: page}, '', window.location.origin + hash);
+      history.pushState({key: page}, '', window.location.href + hash);
     }
 
     // Call stored function
